@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "CheckManager",
+    "slug": "checkmanager",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/icon.png",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "A câmera é usada para ler códigos de barras de produtos."
+      }
+    },
+    "android": {
+      "permissions": [
+        "CAMERA"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/icon.png",
+        "backgroundColor": "#1a365d"
+      },
+      "package": "com.checkmanager.app"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permita o acesso à câmera para ler códigos de barras."
+        }
+      ],
+      "expo-document-picker"
+    ]
+  }
+}
