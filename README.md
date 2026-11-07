@@ -2,6 +2,8 @@
 
 Aplicativo de controle de estoque em JavaScript, React Native e Expo. Permite cadastrar produtos, acompanhar níveis e validades, registrar entradas e saídas e consultar produtos por código de barras.
 
+A interface usa React Native Paper. A navegação é feita por abas no topo: cada aba abre uma tela independente, e o Dashboard também oferece atalhos para ações frequentes.
+
 ## Executar no Expo Go
 
 Requisitos: Node.js LTS, npm e Expo Go no celular.
@@ -42,7 +44,7 @@ src/
 ├── screens/                  # Uma tela por arquivo
 ├── services/                 # API e exportação/impressão
 ├── utils/                    # CSV, métricas e formatação
-├── theme.js                  # Cores, tipografia e espaçamentos
+├── theme.js                  # Tema do React Native Paper e cores
 └── assets/images/
 ```
 

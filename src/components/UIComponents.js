@@ -5,35 +5,39 @@ import {
   ScrollView,
   Text,
   TextInput,
+  useWindowDimensions,
   View,
 } from 'react-native';
+import {
+  Button as PaperButton,
+  Card as PaperCard,
+  List,
+  Text as PaperText,
+  TextInput as PaperTextInput,
+} from 'react-native-paper';
 import { colors } from '../theme';
 import styles from './UIComponents.styles';
 
 export function Button({ title, onPress, variant = 'primary', disabled = false, style }) {
-  const variantStyle = variant === 'secondary'
-    ? styles.buttonSecondary
-    : variant === 'outline'
-      ? styles.buttonOutline
-      : variant === 'danger'
-        ? styles.buttonDanger
-        : null;
+  const mode = variant === 'outline'
+    ? 'outlined'
+    : variant === 'secondary'
+      ? 'contained-tonal'
+      : 'contained';
 
   return (
-    <Pressable
-      accessibilityRole="button"
+    <PaperButton
+      mode={mode}
+      buttonColor={variant === 'danger' ? colors.danger : undefined}
+      textColor={variant === 'danger' ? '#ffffff' : undefined}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.button,
-        variantStyle,
-        disabled && styles.buttonDisabled,
-        pressed && !disabled && styles.buttonPressed,
-        style,
-      ]}
+      style={style}
+      contentStyle={styles.buttonContent}
+      labelStyle={styles.buttonLabel}
     >
-      <Text style={[styles.buttonText, variant === 'outline' && styles.buttonOutlineText]}>{title}</Text>
-    </Pressable>
+      {title}
+    </PaperButton>
   );
 }
 
@@ -55,17 +59,18 @@ export function TextField({
   return (
     <View style={styles.fieldGroup}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput
+      <PaperTextInput
+        mode="outlined"
         accessibilityLabel={label}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor={colors.muted}
         keyboardType={keyboardType}
         multiline={multiline}
         autoCapitalize={autoCapitalize}
         editable={editable}
-        style={[styles.input, multiline && styles.inputMultiline, !editable && styles.inputDisabled]}
+        outlineStyle={styles.inputOutline}
+        style={[styles.input, multiline && styles.inputMultiline]}
         {...inputProps}
       />
     </View>
@@ -74,10 +79,11 @@ export function TextField({
 
 export function SelectField({ label, value, options, onChange, placeholder = 'Selecione' }) {
   const [visible, setVisible] = useState(false);
+  const { height } = useWindowDimensions();
 
   return (
     <View style={styles.fieldGroup}>
-      <Text style={styles.label}>{label}</Text>
+      <PaperText variant="labelLarge">{label}</PaperText>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={label}
@@ -89,24 +95,28 @@ export function SelectField({ label, value, options, onChange, placeholder = 'Se
       </Pressable>
       <Modal visible={visible} transparent animationType="fade" onRequestClose={() => setVisible(false)}>
         <Pressable style={styles.modalOverlay} onPress={() => setVisible(false)}>
-          <Pressable style={styles.modalCard} onPress={(event) => event.stopPropagation()}>
-            <Text style={styles.modalTitle}>{label}</Text>
-            <ScrollView keyboardShouldPersistTaps="handled">
-              {options.map((option) => (
-                <Pressable
-                  accessibilityRole="button"
-                  key={option}
-                  onPress={() => {
-                    onChange(option);
-                    setVisible(false);
-                  }}
-                  style={styles.modalOption}
+          <Pressable style={styles.modalContainer} onPress={(event) => event.stopPropagation()}>
+            <PaperCard style={[styles.modalCard, { maxHeight: height * 0.8 }]}>
+              <PaperCard.Content style={styles.modalContent}>
+                <PaperText variant="titleMedium">{label}</PaperText>
+                <ScrollView
+                  style={[styles.modalOptions, { maxHeight: height * 0.6 }]}
+                  keyboardShouldPersistTaps="handled"
                 >
-                  <Text style={styles.modalOptionText}>{option}</Text>
-                </Pressable>
-              ))}
-            </ScrollView>
-            <Button title="Cancelar" variant="outline" onPress={() => setVisible(false)} />
+                  {options.map((option) => (
+                    <List.Item
+                      key={option}
+                      title={option}
+                      onPress={() => {
+                        onChange(option);
+                        setVisible(false);
+                      }}
+                    />
+                  ))}
+                </ScrollView>
+                <Button title="Cancelar" variant="outline" onPress={() => setVisible(false)} />
+              </PaperCard.Content>
+            </PaperCard>
           </Pressable>
         </Pressable>
       </Modal>
@@ -115,29 +125,33 @@ export function SelectField({ label, value, options, onChange, placeholder = 'Se
 }
 
 export function Card({ children, style }) {
-  return <View style={[styles.card, style]}>{children}</View>;
+  return (
+    <PaperCard mode="elevated" style={style}>
+      <PaperCard.Content style={styles.cardContent}>{children}</PaperCard.Content>
+    </PaperCard>
+  );
 }
 
 export function ScreenTitle({ title, subtitle }) {
   return (
     <View style={styles.titleGroup}>
-      <Text style={styles.heading}>{title}</Text>
-      {subtitle ? <Text style={styles.subheading}>{subtitle}</Text> : null}
+      <PaperText variant="headlineSmall">{title}</PaperText>
+      {subtitle ? <PaperText variant="bodyMedium">{subtitle}</PaperText> : null}
     </View>
   );
 }
 
 export function SectionTitle({ children }) {
-  return <Text style={styles.sectionTitle}>{children}</Text>;
+  return <PaperText variant="titleMedium">{children}</PaperText>;
 }
 
 export function MetricCard({ label, value, detail, color }) {
   return (
     <View style={styles.metricWrapper}>
       <Card>
-        <Text style={styles.metricLabel}>{label}</Text>
-        <Text style={[styles.metricValue, color ? { color } : null]}>{value}</Text>
-        {detail ? <Text style={styles.metricLabel}>{detail}</Text> : null}
+        <PaperText variant="labelMedium">{label}</PaperText>
+        <PaperText variant="headlineSmall" style={color ? { color } : undefined}>{value}</PaperText>
+        {detail ? <PaperText variant="labelMedium">{detail}</PaperText> : null}
       </Card>
     </View>
   );

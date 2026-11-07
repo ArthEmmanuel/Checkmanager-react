@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ActivityIndicator, Alert, View } from 'react-native';
+import { ActivityIndicator, Alert, Text, View } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Button, ButtonRow, ScreenTitle, SelectField, TextField } from '../components/UIComponents';
 import { ContentRow, ProductCard, ScrollScreen, SectionCard } from '../components/LayoutComponents';

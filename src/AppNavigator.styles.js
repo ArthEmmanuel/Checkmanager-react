@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, typography } from './theme';
+import { colors } from './theme';
 
 export default StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: colors.background },
@@ -16,33 +16,18 @@ export default StyleSheet.create({
   brand: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   logo: { width: 43, height: 43, borderRadius: 22, backgroundColor: '#ffffff' },
   brandText: { gap: 1 },
-  brandTitle: { color: '#ffffff', fontSize: typography.sectionTitle + 2, fontWeight: '800' },
+  brandTitle: { color: '#ffffff', fontWeight: '800' },
   brandAccent: { color: '#48d1b3' },
   tagline: { color: '#d6e0ec', fontSize: 11 },
   localStatus: { color: '#c6f6e8', fontSize: 11, fontWeight: '700' },
   navigationScroller: { flexGrow: 0, flexShrink: 0 },
   navigation: {
-    height: 64,
+    minHeight: 64,
     alignItems: 'center',
     paddingHorizontal: 12,
     gap: 8,
   },
-  navItem: {
-    minHeight: 42,
-    paddingHorizontal: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  navItemActive: { backgroundColor: colors.accent, borderColor: colors.accent },
-  navText: { color: colors.secondary, fontWeight: '700', fontSize: typography.small },
-  navTextActive: { color: '#ffffff' },
-  notice: { backgroundColor: '#dcfce7', paddingHorizontal: 16, paddingVertical: 10 },
-  noticeText: { color: '#166534', fontWeight: '700' },
+  navItem: { marginVertical: 4 },
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
-  loadingText: { color: colors.muted, fontSize: typography.subtitle },
   bottomSafeArea: { backgroundColor: colors.background },
 });

@@ -1,3 +1,5 @@
+import { MD3LightTheme } from 'react-native-paper';
+
 export const colors = {
   primary: '#1a365d',
   secondary: '#2d3748',
@@ -27,4 +29,23 @@ export const typography = {
   sectionTitle: 17,
   heading: 22,
   metric: 23,
+};
+
+export const paperTheme = {
+  ...MD3LightTheme,
+  roundness: 12,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: colors.accent,
+    onPrimary: '#ffffff',
+    secondary: colors.primary,
+    secondaryContainer: '#d7f0e9',
+    onSecondaryContainer: colors.primary,
+    background: colors.background,
+    surface: colors.surface,
+    onSurface: colors.text,
+    onSurfaceVariant: colors.muted,
+    outline: colors.border,
+    error: colors.danger,
+  },
 };

@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   Alert,
   Image,
-  Pressable,
   ScrollView,
   StatusBar,
   Text,
   View,
 } from 'react-native';
+import { ActivityIndicator, Chip, Snackbar, Surface, Text as PaperText } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -123,16 +122,16 @@ export default function AppNavigator() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-      <View style={styles.header}>
+      <Surface style={styles.header} elevation={2}>
         <View style={styles.brand}>
           <Image source={require('./assets/images/logo.png')} style={styles.logo} resizeMode="contain" />
           <View style={styles.brandText}>
-            <Text style={styles.brandTitle}>Check<Text style={styles.brandAccent}>Manager</Text></Text>
+            <PaperText variant="titleMedium" style={styles.brandTitle}>Check<Text style={styles.brandAccent}>Manager</Text></PaperText>
             <Text style={styles.tagline}>Estoque sob controle</Text>
           </View>
         </View>
         <Text style={styles.localStatus}>●  Dados locais</Text>
-      </View>
+      </Surface>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -140,33 +139,31 @@ export default function AppNavigator() {
         contentContainerStyle={styles.navigation}
       >
         {SCREENS.map((screen) => (
-          <Pressable
-            accessibilityRole="tab"
-            accessibilityState={{ selected: activeScreen === screen.id }}
+          <Chip
             key={screen.id}
             onPress={() => setActiveScreen(screen.id)}
-            style={[styles.navItem, activeScreen === screen.id && styles.navItemActive]}
+            selected={activeScreen === screen.id}
+            showSelectedCheck={false}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: activeScreen === screen.id }}
+            style={styles.navItem}
           >
-            <Text style={[styles.navText, activeScreen === screen.id && styles.navTextActive]}>
-              {screen.title}
-            </Text>
-          </Pressable>
+            {screen.title}
+          </Chip>
         ))}
       </ScrollView>
-      {notification ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Dispensar notificação"
-          onPress={() => setNotification('')}
-          style={styles.notice}
-        >
-          <Text accessibilityLiveRegion="polite" style={styles.noticeText}>{notification}</Text>
-        </Pressable>
-      ) : null}
+      <Snackbar
+        visible={Boolean(notification)}
+        onDismiss={() => setNotification('')}
+        duration={3500}
+        action={{ label: 'Fechar', onPress: () => setNotification('') }}
+      >
+        {notification}
+      </Snackbar>
       {inventory.isLoading ? (
         <View style={styles.loading}>
-          <ActivityIndicator size="large" color={colors.accent} />
-          <Text style={styles.loadingText}>Carregando estoque salvo...</Text>
+          <ActivityIndicator animating size="large" color={colors.accent} />
+          <PaperText variant="bodyMedium">Carregando estoque salvo...</PaperText>
         </View>
       ) : (
         <ActiveScreen
